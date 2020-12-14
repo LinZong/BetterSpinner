@@ -19,9 +19,22 @@ android {
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile 'com.android.support:appcompat-v7:23.1.1'
-    compile 'com.rengwuxian.materialedittext:library:2.1.4'
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation 'com.android.support:appcompat-v7:23.1.1'
+    implementation 'com.rengwuxian.materialedittext:library:2.1.4'
 }
 
-apply from: '../maven_push.gradle'
+//apply from: '../maven_push.gradle'
+
+project.afterEvaluate {
+    publishing {
+        publications {
+            library(MavenPublication) {
+                setGroupId GROUP
+                setArtifactId project.POM_ARTIFACT_ID
+                version android.defaultConfig.versionName
+                artifact bundleReleaseAar
+            }
+        }
+    }
+}
