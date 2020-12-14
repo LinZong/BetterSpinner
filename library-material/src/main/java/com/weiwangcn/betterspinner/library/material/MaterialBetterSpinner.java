@@ -71,14 +71,14 @@ public class MaterialBetterSpinner extends MaterialAutoCompleteTextView implemen
             case MotionEvent.ACTION_UP: {
                 long clickDuration = Calendar.getInstance().getTimeInMillis() - startClickTime;
                 if (clickDuration < MAX_CLICK_DURATION) {
-                    if (isPopup) {
-                        dismissDropDown();
-                        isPopup = false;
-                    } else {
+//                    if (isPopup) {
+//                        dismissDropDown();
+//                        isPopup = false;
+//                    } else {
                         requestFocus();
                         showDropDown();
                         isPopup = true;
-                    }
+//                    }
                 }
             }
         }

@@ -26,6 +26,12 @@ dependencies {
 
 //apply from: '../maven_push.gradle'
 
+task androidSourcesJar(type: Jar) {
+    classifier = 'sources'
+    //basename = artifact_id
+    from android.sourceSets.main.java.sourceFiles
+}
+
 project.afterEvaluate {
     publishing {
         publications {
@@ -34,6 +40,29 @@ project.afterEvaluate {
                 setArtifactId project.POM_ARTIFACT_ID
                 version android.defaultConfig.versionName
                 artifact bundleReleaseAar
+                artifact androidSourcesJar
+                pom.withXml {
+                    def dependenciesNode = asNode().appendNode('dependencies')
+                    configurations.implementation.allDependencies.each {
+                        if (it.group != null && (it.name != null || "unspecified".equals(it.name)) && it.version != null) {
+                            println("Adding implementation dependency: ${it.group}:${it.name}:${it.version}")
+                            def dependencyNode = dependenciesNode.appendNode('dependency')
+                            dependencyNode.appendNode('groupId', it.group)
+                            dependencyNode.appendNode('artifactId', it.name)
+                            dependencyNode.appendNode('version', it.version)
+                        }
+                    }
+                    configurations.compileOnly.allDependencies.each {
+                        if (it.group != null && (it.name != null || "unspecified".equals(it.name)) && it.version != null) {
+                            println("Adding implementation dependency: ${it.group}:${it.name}:${it.version}")
+                            def dependencyNode = dependenciesNode.appendNode('dependency')
+                            dependencyNode.appendNode('groupId', it.group)
+                            dependencyNode.appendNode('artifactId', it.name)
+                            dependencyNode.appendNode('version', it.version)
+                            dependencyNode.appendNode('scope','provided')
+                        }
+                    }
+                }
             }
         }
     }
