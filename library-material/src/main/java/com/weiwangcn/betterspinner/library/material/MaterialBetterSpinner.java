@@ -105,4 +105,9 @@ public class MaterialBetterSpinner extends MaterialAutoCompleteTextView implemen
     public int getPosition() {
         return mPosition;
     }
+
+    public void safeSetText(CharSequence cs) {
+        setText(cs);
+        clearFocus();
+    }
 }
