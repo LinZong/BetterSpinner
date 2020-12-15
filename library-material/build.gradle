@@ -24,13 +24,8 @@ dependencies {
     implementation 'com.rengwuxian.materialedittext:library:2.1.4'
 }
 
-//apply from: '../maven_push.gradle'
+apply from: '../maven_push.gradle'
 
-task androidSourcesJar(type: Jar) {
-    classifier = 'sources'
-    //basename = artifact_id
-    from android.sourceSets.main.java.sourceFiles
-}
 
 project.afterEvaluate {
     publishing {
